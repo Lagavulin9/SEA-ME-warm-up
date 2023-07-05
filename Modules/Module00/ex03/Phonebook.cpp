@@ -7,18 +7,16 @@ void	Phonebook::ADD()
 {
 	std::cin.ignore(std::numeric_limits<std::streamsize>::max(), '\n');
 	std::string	name, phoneNumber, nickname;
-	name = takeInput("Enter Name: ");
+	name = takeInput("Name: ");
 	while(1)
 	{
-		// std::cout << "Enter PhoneNumber: ";
-		// std::cin >> phoneNumber;
-		phoneNumber = takeInput("Enter PhoneNumber: ");
+		phoneNumber = takeInput("PhoneNumber: ");
 		if (!this->isUnique(phoneNumber))
-			std::cout << "Phone number '" << phoneNumber << "' is already registered!" << std::endl;
+			std::cout << "Phone number '" << BOLD << phoneNumber << RESET << "' is already registered!" << std::endl;
 		else
 			break;
 	}
-	nickname = takeInput("Enter NickName: ");
+	nickname = takeInput("NickName: ");
 
 	Contact	newContact(name, phoneNumber, nickname);
 	this->_contacts.push_back(newContact);
@@ -31,7 +29,10 @@ void	Phonebook::ADD()
 void	Phonebook::SEARCH()
 {
 	if (this->_contacts.empty())
+	{
+		std::cin.ignore(std::numeric_limits<std::streamsize>::max(), '\n');
 		std::cout << "Phonebook is Empty!" << std::endl;
+	}
 	else
 	{
 		print();
@@ -44,8 +45,10 @@ void	Phonebook::SEARCH()
 		if (input == "b")
 		{
 			_contacts[index].setBookmark();
-			std::cout << "'" << _contacts[index]._name << "' is added to your bookmark" << std::endl;
+			std::cout << "'" << BOLD << _contacts[index]._name << RESET << "' is added to your bookmark" << std::endl;
 		}
+		else
+			return ;
 	}
 	this->pressEnter();
 }
@@ -63,16 +66,27 @@ void	Phonebook::REMOVE()
 
 void	Phonebook::BOOKMARK()
 {
-	std::cout << "Index | Name | PhoneNumber | NickName" << std::endl;
+	std::cout << "     Index |    Name    |  NickName  | PhoneNumber" << std::endl;
 	for (size_t i=0; i < _contacts.size(); i++)
 	{
 		if (_contacts[i].isBookmarked())
 		{
-			std::cout.width(5);
-			std::cout << i << " | ";
-			std::cout << _contacts[i]._name << " | ";
-			std::cout << _contacts[i]._phoneNumber << " | ";
-			std::cout << _contacts[i]._nickname << std::endl;
+			std::cout << std::setw(10) << i;
+			std::cout << " | ";
+			std::cout << std::left;
+			if (_contacts[i]._name.length() >= 10)
+				std::cout << std::setw(9) << _contacts[i]._name.substr(0,9) << '.';
+			else
+				std::cout << std::setw(10) << _contacts[i]._name;
+			std::cout << " | ";
+			std::cout << std::left;
+			if (_contacts[i]._nickname.length() >= 10)
+				std::cout << std::setw(9) << _contacts[i]._nickname.substr(0,9) << '.';
+			else
+				std::cout << std::setw(10) << _contacts[i]._nickname;
+			std::cout << " | ";
+			std::cout << _contacts[i]._phoneNumber;
+			std::cout << std::right << std::endl;
 		}
 	}
 	std::cin.ignore(std::numeric_limits<std::streamsize>::max(), '\n');
@@ -87,10 +101,10 @@ void	Phonebook::EXIT()
 
 void	Phonebook::print()
 {
-	std::cout << "Index | Name" << std::endl;
+	std::cout << "     Index | Name" << std::endl;
 	for (size_t i=0; i < _contacts.size(); i++)
 	{
-		std::cout.width(5);
+		std::cout.width(10);
 		std::cout << i << " | ";
 		std::cout << _contacts[i]._name << std::endl;
 	}
@@ -116,7 +130,10 @@ std::string	Phonebook::takeInput(const std::string& msg)
 		if (std::cin.eof())
 			exit(1);
 		else if (input == "")
-			std::cout << "Error: This field canoot be an empty field" << std::endl;
+		{
+			std::cout << RED << "Error" << RESET;
+			std::cout <<  ": This field can't be Empty!" << std::endl;
+		}
 		else
 			break;
 	}
@@ -144,6 +161,8 @@ int	Phonebook::takeIndexInput()
 void	Phonebook::pressEnter()
 {
 	std::string	input;
-	std::cout << "Press Enter to return...";
+	std::cout << "Press ";
+	std::cout << BOLD << "Enter";
+	std::cout << RESET << " to return...";
 	std::getline(std::cin, input);
 }

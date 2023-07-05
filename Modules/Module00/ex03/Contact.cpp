@@ -22,7 +22,9 @@ void	Contact::setBookmark()
 
 void	Contact::showDetails()
 {
+	std::cout << BOLD;
 	std::cout << "Name: " << _name << std::endl;
 	std::cout << "PhoneNumber: " << _phoneNumber << std::endl;
 	std::cout << "NickName: " << _nickname << std::endl;
+	std::cout << RESET;
 }

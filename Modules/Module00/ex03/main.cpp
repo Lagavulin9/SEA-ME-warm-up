@@ -22,6 +22,13 @@ int	main()
 		else if (command == "EXIT")
 			phonebook.EXIT();
 		else
+		{
 			std::cout << "Usage: ADD, SEARCH, REMOVE, BOOKMARK, EXIT" << std::endl;
+			std::string	input;
+			std::cout << "Press Enter to return...";
+			std::cin.ignore(std::numeric_limits<std::streamsize>::max(), '\n');
+			std::getline(std::cin, input);
+		}
+			
 	}
 }
