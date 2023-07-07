@@ -38,7 +38,7 @@ public:
 
 	APart&	operator=(const APart&);
 
-	void			showDetail();
+	virtual void	showDetail();
 	virtual int		healthCheck() = 0;
 };
 

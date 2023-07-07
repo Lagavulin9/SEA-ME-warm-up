@@ -3,7 +3,12 @@
 
 int	main()
 {
-	Car	A;
+	Engine	eng("A", "MQW-123", 2020);
+	Wheel	wh("B", "E-1234", 2022);
+
+	Car	A(eng, wh);
+
+	A.showDetail();
 
 	srand(time(NULL));
 	while (!std::cin.eof())

@@ -4,6 +4,8 @@
 
 # include "APart.hpp"
 
+# define DEFAULT_PRESSURE 100
+
 class Wheel : public APart
 {
 private:

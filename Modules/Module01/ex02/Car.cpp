@@ -19,6 +19,16 @@ Car&	Car::operator=(const Car& ref)
 
 Car::~Car(){};
 
+void	Car::showDetail()
+{
+	std::cout << GREEN_COLOR << BOLD << "Engine Info" << RESET << std::endl;
+	Engine::showDetail();
+	std::cout << std::endl;
+	std::cout << YELLOW_COLOR << BOLD << "Wheel Info" << RESET << std::endl;
+	Wheel::showDetail();
+	std::cout << std::endl;
+}
+
 void	Car::drive()
 {
 	int	engineStatus = Engine::healthCheck();
@@ -29,7 +39,5 @@ void	Car::drive()
 		std::cout << "Failed to drive. Please repair" << std::endl;
 		return ;
 	}
-	Engine::startEngine();
-	Wheel::spin();
 	std::cout << "We are driving!" << std::endl;
 }

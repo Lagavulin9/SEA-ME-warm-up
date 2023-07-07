@@ -17,6 +17,7 @@ public:
 
 	Car&	operator=(const Car&);
 
+	void	showDetail();
 	void	drive();
 };
 

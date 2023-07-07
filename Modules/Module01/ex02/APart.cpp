@@ -12,7 +12,8 @@ APart::APart(const std::string& make,
 			const size_t& year):
 			_make(make),
 			_model(model),
-			_year(year)
+			_year(year),
+			_status(DEFAULT_STATUS)
 {}
 
 APart::APart(const APart& ref):

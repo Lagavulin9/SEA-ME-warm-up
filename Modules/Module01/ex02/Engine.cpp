@@ -25,11 +25,12 @@ Engine::~Engine(){};
 int	Engine::healthCheck()
 {
 	std::cout << "Running dignostics on engine..." << std::endl;
+	this->startEngine();
 	std::cout << "Engine Status: ";
 	if (this->_status == GREEN)
-		std::cout << GREEN_COLOR << "OK";
+		std::cout << GREEN_COLOR << BOLD << "OK";
 	else
-		std::cout << RED_COLOR << "Malfuncion";
+		std::cout << RED_COLOR << BOLD << "Malfuncion";
 	std::cout << RESET << std::endl;
 	return this->_status;
 }
