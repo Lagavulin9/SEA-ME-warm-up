@@ -1,6 +1,6 @@
 #pragma once
-// #ifndef __CONVERTER__HPP__
-// # define __CONVERTER_HPP__
+#ifndef __CONVERTER__HPP__
+# define __CONVERTER_HPP__
 
 # include <iostream>
 # include <string>
@@ -16,4 +16,4 @@ public:
 	std::string convert(std::string cmd, std::string arg);
 };
 
-// #endif
+#endif
