@@ -43,8 +43,18 @@ Car::Car(const Engine& engine,
 
 Car&	Car::operator=(const Car& ref)
 {
-	new (this)(Car)(ref);
-	return (*this);
+	if (this != &ref) {
+		_engine = std::make_shared<Engine>(*ref._engine);
+		_wheels.clear();
+		_brakes.clear();
+		for (size_t i = 0; i < NUMBER_OF_WHEELS; i++)
+		{
+			_wheels.push_back(std::make_shared<Wheel>(*ref._wheels[i]));
+			_brakes.push_back(std::make_shared<Brake>(*ref._brakes[i]));
+		}
+		_tranmission = std::make_shared<Transmission>(*ref._tranmission);
+	}
+	return *this;
 }
 
 Car::~Car(){};
