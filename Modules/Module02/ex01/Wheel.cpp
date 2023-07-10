@@ -27,22 +27,16 @@ Wheel::~Wheel(){};
 
 int	Wheel::healthCheck()
 {
-	std::cout << "Running dignostics on wheels..." << std::endl;
-	this->spin();
-	std::cout << "Wheel Status: ";
-	if (this->_status == GREEN)
-		std::cout << GREEN_COLOR << BOLD << "OK";
-	else
-		std::cout << RED_COLOR << BOLD << "Low tyre pressure";
-	std::cout << RESET << std::endl;
 	return this->_status;
 }
 
 void	Wheel::spin()
 {
-	std::cout << "Wheels are spinning..." << std::endl;
-	if (this->_pressure >= 30)
-		this->_pressure -= 10;
-	else
+	int	min = 1;
+	int	max = 10;
+	int	randomValue = min + (std::rand() % (max - min + 1));
+
+	this->_pressure -= randomValue;
+	if (_pressure < 30)
 		this->_status = RED;
 }

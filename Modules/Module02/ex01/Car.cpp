@@ -72,13 +72,37 @@ void	Car::drive()
 	int	wheelStatus = GREEN;
 	int	brakeStatus = GREEN;
 
+	std::cout<< "Running dignostics on wheels..." << std::endl;
+	std::cout << "Wheels [";
 	for (size_t i = 0; i < NUMBER_OF_WHEELS; i++)
 	{
 		if (_wheels[i]->healthCheck() == RED)
+		{
+			std::cout << RED_COLOR << BOLD << "Low tyre pressure" << RESET;
 			wheelStatus = RED;
-		if (_brakes[i]->healthCheck() == RED)
-			brakeStatus = RED;
+		}
+		else
+			std::cout << GREEN_COLOR << BOLD << "OK" << RESET;
+		if (i + 1 != NUMBER_OF_WHEELS)
+			std::cout << ", ";
 	}
+	std::cout << "]" << std::endl;
+
+	std::cout << "Running dignostics on brakes..." << std::endl;
+	std::cout << "Brakes [";
+	for (size_t i = 0; i < NUMBER_OF_WHEELS; i++)
+	{
+		if (_brakes[i]->healthCheck() == RED)
+		{
+			std::cout << RED_COLOR << BOLD << "Thin brake pad" << RESET;
+			wheelStatus = RED;
+		}
+		else
+			std::cout << GREEN_COLOR << BOLD << "OK" << RESET;
+		if (i + 1 != NUMBER_OF_WHEELS)
+			std::cout << ", ";
+	}
+	std::cout << "]" << std::endl;
 
 	if (engineStatus == RED || \
 		wheelStatus == RED || \
@@ -91,6 +115,7 @@ void	Car::drive()
 	std::cout << "We are driving!" << std::endl;
 	for (size_t i = 0; i < NUMBER_OF_WHEELS; i++)
 	{
+		_wheels[i]->spin();
 		_brakes[i]->hitBrake();
 	}
 	_tranmission->shiftGear();

@@ -32,19 +32,16 @@ Brake::~Brake(){}
 
 int	Brake::healthCheck()
 {
-	std::cout << "Running dignostics on Brake..." << std::endl;
-	std::cout << "Brake Status: ";
-	if (this->_status == GREEN)
-		std::cout << GREEN_COLOR << BOLD << "OK";
-	else
-		std::cout << RED_COLOR << BOLD << "Too thin brake pad";
-	std::cout << RESET << std::endl;
 	return this->_status;
 }
 
 void	Brake::hitBrake()
 {
-	this->_brakePad -= 1;
+	int	min = 1;
+	int	max = 10;
+	int	randomValue = min + (std::rand() % (max - min + 1));
+
+	this->_brakePad -= randomValue;
 	if (this->_brakePad < 10)
 		this->_status = RED;
 }

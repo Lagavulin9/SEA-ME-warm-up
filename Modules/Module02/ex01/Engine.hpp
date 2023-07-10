@@ -3,7 +3,6 @@
 # define __ENGINE_HPP__
 
 # include "APart.hpp"
-# include <cstdlib>
 
 class Engine : public APart
 {

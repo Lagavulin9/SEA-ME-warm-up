@@ -3,7 +3,6 @@
 # define __TRANSMISSION_CPP__
 
 # include "APart.hpp"
-# include <cstdlib>
 
 class Transmission : public APart
 {
