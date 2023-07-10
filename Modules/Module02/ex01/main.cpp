@@ -1,7 +1,9 @@
 #include "Car.hpp"
 #include "time.h"
 
-int	main()
+#include <unistd.h>
+
+void	test()
 {
 	Engine			eng("A", "MQW-123", 2020);
 	Wheel			wh("B", "E-1234", 2022);
@@ -18,9 +20,21 @@ int	main()
 		std::string	input;
 		std::cout << "Press ";
 		std::cout << BOLD << "Enter" << RESET;
-		std::cout << " to drive" << std::endl;
+		std::cout << " to drive, cntl + D to exit" << std::endl;
 		std::getline(std::cin, input);
 		A.drive();
 		std::cout << std::endl;
 	}
 }
+
+void	leak()
+{
+	system("leaks myCar -q");
+}
+
+int	main()
+{
+	atexit(leak);
+	test();
+}
+
