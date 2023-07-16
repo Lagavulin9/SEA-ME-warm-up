@@ -50,6 +50,7 @@
 
 #include "addresswidget.h"
 #include "adddialog.h"
+#include <QDebug>
 
 #include <QtWidgets>
 
@@ -150,21 +151,18 @@ void AddressWidget::editEntry()
         const QString newAddress = aDialog.address();
         const QString newEmail = aDialog.email();
         const QString newPhonenumber = aDialog.phonenumber();
-        if (newAddress != address) {
-            const QModelIndex index = table->index(row, 1, QModelIndex());
-            table->setData(index, newAddress, Qt::EditRole);
-            findTab->testTable->setData(index, newAddress, Qt::EditRole);
-        }
-        if (newEmail != email){
-            const QModelIndex index = table->index(row, 2, QModelIndex());
-            table->setData(index, newEmail, Qt::EditRole);
-            findTab->testTable->setData(index, newEmail, Qt::EditRole);
-        }
-        if (newPhonenumber != phonenumber){
-            const QModelIndex index = table->index(row, 3, QModelIndex());
-            table->setData(index, newPhonenumber, Qt::EditRole);
-            findTab->testTable->setData(index, newPhonenumber, Qt::EditRole);
-        }
+
+        QModelIndex index = table->index(row, 1, QModelIndex());
+        table->setData(index, newAddress, Qt::EditRole);
+        findTab->testTable->setData(index, newAddress, Qt::EditRole);
+
+        index = table->index(row, 2, QModelIndex());
+        table->setData(index, newEmail, Qt::EditRole);
+        findTab->testTable->setData(index, newEmail, Qt::EditRole);
+
+        index = table->index(row, 3, QModelIndex());
+        table->setData(index, newPhonenumber, Qt::EditRole);
+        findTab->testTable->setData(index, newPhonenumber, Qt::EditRole);
     }
 }
 //! [4b]
