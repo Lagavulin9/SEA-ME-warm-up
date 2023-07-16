@@ -8,7 +8,6 @@ SOURCES   = adddialog.cpp \
             findtab.cpp \
             main.cpp \
             mainwindow.cpp \
-            newaddresstab.cpp \
             tablemodel.cpp
 HEADERS   = adddialog.h \
             addresswidget.h \
@@ -16,9 +15,8 @@ HEADERS   = adddialog.h \
             finddialog.h \
             findtab.h \
             mainwindow.h \
-            newaddresstab.h \
             tablemodel.h
 
 # install
-target.path = $$[QT_INSTALL_EXAMPLES]/widgets/itemviews/addressbook
+target.path = .
 INSTALLS += target
