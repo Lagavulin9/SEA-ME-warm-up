@@ -51,7 +51,6 @@
 #ifndef ADDRESSWIDGET_H
 #define ADDRESSWIDGET_H
 
-#include "newaddresstab.h"
 #include "tablemodel.h"
 #include "findtab.h"
 
