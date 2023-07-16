@@ -4,6 +4,8 @@ requires(qtConfig(listview))
 SOURCES   = adddialog.cpp \
             addresswidget.cpp \
             contact.cpp \
+            finddialog.cpp \
+            findtab.cpp \
             main.cpp \
             mainwindow.cpp \
             newaddresstab.cpp \
@@ -11,6 +13,8 @@ SOURCES   = adddialog.cpp \
 HEADERS   = adddialog.h \
             addresswidget.h \
             contact.h \
+            finddialog.h \
+            findtab.h \
             mainwindow.h \
             newaddresstab.h \
             tablemodel.h

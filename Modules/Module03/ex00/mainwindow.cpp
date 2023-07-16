@@ -61,7 +61,7 @@ MainWindow::MainWindow()
 {
     setCentralWidget(addressWidget);
     createMenus();
-    setWindowTitle(tr("Address Book"));
+    setWindowTitle(tr("myPhoneBook"));
 }
 //! [0]
 

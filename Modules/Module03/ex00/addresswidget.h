@@ -53,6 +53,7 @@
 
 #include "newaddresstab.h"
 #include "tablemodel.h"
+#include "findtab.h"
 
 #include <QItemSelection>
 #include <QTabWidget>
@@ -85,10 +86,10 @@ signals:
     void selectionChanged (const QItemSelection &selected);
 
 private:
-    void setupTabs();
-
+    void setContactTab();
+    //NewAddressTab *newAddressTab;
+    FindTab *findTab;
     TableModel *table;
-    NewAddressTab *newAddressTab;
 };
 //! [0]
 

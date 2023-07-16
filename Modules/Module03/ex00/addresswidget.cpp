@@ -56,15 +56,12 @@
 //! [0]
 AddressWidget::AddressWidget(QWidget *parent)
     : QTabWidget(parent),
-      table(new TableModel(this)),
-      newAddressTab(new NewAddressTab(this))
+      findTab(new FindTab(this)),
+      table(new TableModel(this))
 {
-    connect(newAddressTab, &NewAddressTab::sendDetails,
-        this, &AddressWidget::addEntry);
+    setContactTab();
 
-    addTab(newAddressTab, tr("Address Book"));
-
-    setupTabs();
+    addTab(findTab, tr("Search"));
 }
 //! [0]
 
@@ -87,22 +84,6 @@ void AddressWidget::addEntry(const QString &name, \
                              const QString &email, \
                              const QString &phonenumber)
 {
-//    if (!table->getContacts().contains({ name, address, email, phonenumber })) {
-//        table->insertRows(0, 1, QModelIndex());
-
-//        QModelIndex index = table->index(0, 0, QModelIndex());
-//        table->setData(index, name, Qt::EditRole);
-//        index = table->index(0, 1, QModelIndex());
-//        table->setData(index, address, Qt::EditRole);
-//        index = table->index(0, 2, QModelIndex());
-//        table->setData(index, email, Qt::EditRole);
-//        index = table->index(0, 3, QModelIndex());
-//        table->setData(index, phonenumber, Qt::EditRole);
-//        removeTab(indexOf(newAddressTab));
-//    } else {
-//        QMessageBox::information(this, tr("Duplicate Name"),
-//            tr("The name \"%1\" already exists.").arg(name));
-//    }
     table->insertRows(0, 1, QModelIndex());
 
     QModelIndex index = table->index(0, 0, QModelIndex());
@@ -113,7 +94,16 @@ void AddressWidget::addEntry(const QString &name, \
     table->setData(index, email, Qt::EditRole);
     index = table->index(0, 3, QModelIndex());
     table->setData(index, phonenumber, Qt::EditRole);
-    removeTab(indexOf(newAddressTab));
+
+    findTab->testTable->insertRows(0, 1, QModelIndex());
+    QModelIndex testIndex = findTab->testTable->index(0, 0, QModelIndex());
+    findTab->testTable->setData(testIndex, name, Qt::EditRole);
+    testIndex = findTab->testTable->index(0, 1, QModelIndex());
+    findTab->testTable->setData(testIndex, address, Qt::EditRole);
+    testIndex = findTab->testTable->index(0, 2, QModelIndex());
+    findTab->testTable->setData(testIndex, email, Qt::EditRole);
+    testIndex = findTab->testTable->index(0, 3, QModelIndex());
+    findTab->testTable->setData(testIndex, phonenumber, Qt::EditRole);
 }
 //! [3]
 
@@ -163,14 +153,17 @@ void AddressWidget::editEntry()
         if (newAddress != address) {
             const QModelIndex index = table->index(row, 1, QModelIndex());
             table->setData(index, newAddress, Qt::EditRole);
+            findTab->testTable->setData(index, newAddress, Qt::EditRole);
         }
         if (newEmail != email){
             const QModelIndex index = table->index(row, 2, QModelIndex());
             table->setData(index, newEmail, Qt::EditRole);
+            findTab->testTable->setData(index, newEmail, Qt::EditRole);
         }
         if (newPhonenumber != phonenumber){
             const QModelIndex index = table->index(row, 3, QModelIndex());
             table->setData(index, newPhonenumber, Qt::EditRole);
+            findTab->testTable->setData(index, newPhonenumber, Qt::EditRole);
         }
     }
 }
@@ -188,72 +181,36 @@ void AddressWidget::removeEntry()
     for (QModelIndex index : indexes) {
         int row = proxy->mapToSource(index).row();
         table->removeRows(row, 1, QModelIndex());
+        findTab->testTable->removeRows(row, 1, QModelIndex());
     }
-
-    if (table->rowCount(QModelIndex()) == 0)
-        insertTab(0, newAddressTab, tr("Address Book"));
 }
 //! [5]
 
 //! [1]
-void AddressWidget::setupTabs()
+void AddressWidget::setContactTab()
 {
-//    const auto groups = { "ABC", "DEF", "GHI", "JKL", "MNO", "PQR", "STU", "VW", "XYZ" };
+    auto proxyModel = new QSortFilterProxyModel(this);
+    proxyModel->setSourceModel(table);
+    proxyModel->setFilterKeyColumn(0);
 
-//    for (const QString &str : groups) {
-//        const auto regExp = QRegularExpression(QString("^[%1].*").arg(str),
-//                                               QRegularExpression::CaseInsensitiveOption);
+    QTableView *tableView = new QTableView;
+    tableView->setModel(proxyModel);
+    tableView->setSelectionBehavior(QAbstractItemView::SelectRows);
+    tableView->horizontalHeader()->setStretchLastSection(true);
+    tableView->verticalHeader()->hide();
+    tableView->setEditTriggers(QAbstractItemView::NoEditTriggers);
+    tableView->setSelectionMode(QAbstractItemView::SingleSelection);
+    tableView->setSortingEnabled(true);
 
-//        auto proxyModel = new QSortFilterProxyModel(this);
-//        proxyModel->setSourceModel(table);
-//        proxyModel->setFilterRegularExpression(regExp);
-//        proxyModel->setFilterKeyColumn(0);
+    connect(tableView->selectionModel(), &QItemSelectionModel::selectionChanged,
+            this, &AddressWidget::selectionChanged);
 
-//        QTableView *tableView = new QTableView;
-//        tableView->setModel(proxyModel);
-//        tableView->setSelectionBehavior(QAbstractItemView::SelectRows);
-//        tableView->horizontalHeader()->setStretchLastSection(true);
-//        tableView->verticalHeader()->hide();
-//        tableView->setEditTriggers(QAbstractItemView::NoEditTriggers);
-//        tableView->setSelectionMode(QAbstractItemView::SingleSelection);
-//        tableView->setSortingEnabled(true);
+    connect(this, &QTabWidget::currentChanged, this, [this, tableView](int tabIndex) {
+        if (widget(tabIndex) == tableView)
+            emit selectionChanged(tableView->selectionModel()->selection());
+    });
 
-//        connect(tableView->selectionModel(), &QItemSelectionModel::selectionChanged,
-//                this, &AddressWidget::selectionChanged);
-
-//        connect(this, &QTabWidget::currentChanged, this, [this, tableView](int tabIndex) {
-//            if (widget(tabIndex) == tableView)
-//                emit selectionChanged(tableView->selectionModel()->selection());
-//        });
-
-//        addTab(tableView, str);
-//    }
-//        const auto regExp = QRegularExpression(QString("*").arg(str),
-//                                               QRegularExpression::CaseInsensitiveOption);
-
-        auto proxyModel = new QSortFilterProxyModel(this);
-        proxyModel->setSourceModel(table);
-        //proxyModel->setFilterRegularExpression(regExp);
-        proxyModel->setFilterKeyColumn(0);
-
-        QTableView *tableView = new QTableView;
-        tableView->setModel(proxyModel);
-        tableView->setSelectionBehavior(QAbstractItemView::SelectRows);
-        tableView->horizontalHeader()->setStretchLastSection(true);
-        tableView->verticalHeader()->hide();
-        tableView->setEditTriggers(QAbstractItemView::NoEditTriggers);
-        tableView->setSelectionMode(QAbstractItemView::SingleSelection);
-        tableView->setSortingEnabled(true);
-
-        connect(tableView->selectionModel(), &QItemSelectionModel::selectionChanged,
-                this, &AddressWidget::selectionChanged);
-
-        connect(this, &QTabWidget::currentChanged, this, [this, tableView](int tabIndex) {
-            if (widget(tabIndex) == tableView)
-                emit selectionChanged(tableView->selectionModel()->selection());
-        });
-
-        addTab(tableView, "Contacts");
+    addTab(tableView, "Contacts");
 }
 //! [1]
 
