@@ -22,13 +22,14 @@ class FindTab : public QTabWidget
 
 public:
     FindTab(QWidget *parent = nullptr);
-    TableModel *testTable;
+    TableModel *getTable();
 
 public slots:
     void findEntry();
 
 private:
     QSortFilterProxyModel *proxyModel;
+    TableModel *findTable;
 
 signals:
     void sendArg(const QString &arg);

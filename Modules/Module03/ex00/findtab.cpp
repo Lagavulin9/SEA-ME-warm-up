@@ -7,11 +7,11 @@
 //! [0]
 FindTab::FindTab(QWidget *parent):
     QTabWidget(parent),
-    testTable(new TableModel(this)),
-    proxyModel(new QSortFilterProxyModel(this))
+    proxyModel(new QSortFilterProxyModel(this)),
+    findTable(new TableModel(this))
 {
     auto mainLayout = new QVBoxLayout;
-    proxyModel->setSourceModel(testTable);
+    proxyModel->setSourceModel(findTable);
     proxyModel->setFilterKeyColumn(0);
 
     QTableView *tableView = new QTableView;
@@ -51,7 +51,13 @@ void FindTab::findEntry()
     if (findDialog.exec())
     {
         QString toFind = findDialog.getFindText();
+        proxyModel->setFilterCaseSensitivity(Qt::CaseInsensitive);
         proxyModel->setFilterFixedString(toFind);
     }
 }
 //! [1]
+
+TableModel* FindTab::getTable()
+{
+    return findTable;
+}

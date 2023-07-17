@@ -96,15 +96,16 @@ void AddressWidget::addEntry(const QString &name, \
     index = table->index(0, 3, QModelIndex());
     table->setData(index, phonenumber, Qt::EditRole);
 
-    findTab->testTable->insertRows(0, 1, QModelIndex());
-    QModelIndex testIndex = findTab->testTable->index(0, 0, QModelIndex());
-    findTab->testTable->setData(testIndex, name, Qt::EditRole);
-    testIndex = findTab->testTable->index(0, 1, QModelIndex());
-    findTab->testTable->setData(testIndex, address, Qt::EditRole);
-    testIndex = findTab->testTable->index(0, 2, QModelIndex());
-    findTab->testTable->setData(testIndex, email, Qt::EditRole);
-    testIndex = findTab->testTable->index(0, 3, QModelIndex());
-    findTab->testTable->setData(testIndex, phonenumber, Qt::EditRole);
+    const auto findTable = findTab->getTable();
+    findTable->insertRows(0, 1, QModelIndex());
+    QModelIndex testIndex = findTable->index(0, 0, QModelIndex());
+    findTable->setData(testIndex, name, Qt::EditRole);
+    testIndex = findTable->index(0, 1, QModelIndex());
+    findTable->setData(testIndex, address, Qt::EditRole);
+    testIndex = findTable->index(0, 2, QModelIndex());
+    findTable->setData(testIndex, email, Qt::EditRole);
+    testIndex = findTable->index(0, 3, QModelIndex());
+    findTable->setData(testIndex, phonenumber, Qt::EditRole);
 }
 //! [3]
 
@@ -151,18 +152,19 @@ void AddressWidget::editEntry()
         const QString newAddress = aDialog.address();
         const QString newEmail = aDialog.email();
         const QString newPhonenumber = aDialog.phonenumber();
+        const auto findTable = findTab->getTable();
 
         QModelIndex index = table->index(row, 1, QModelIndex());
         table->setData(index, newAddress, Qt::EditRole);
-        findTab->testTable->setData(index, newAddress, Qt::EditRole);
+        findTable->setData(index, newAddress, Qt::EditRole);
 
         index = table->index(row, 2, QModelIndex());
         table->setData(index, newEmail, Qt::EditRole);
-        findTab->testTable->setData(index, newEmail, Qt::EditRole);
+        findTable->setData(index, newEmail, Qt::EditRole);
 
         index = table->index(row, 3, QModelIndex());
         table->setData(index, newPhonenumber, Qt::EditRole);
-        findTab->testTable->setData(index, newPhonenumber, Qt::EditRole);
+        findTable->setData(index, newPhonenumber, Qt::EditRole);
     }
 }
 //! [4b]
@@ -175,11 +177,12 @@ void AddressWidget::removeEntry()
     QItemSelectionModel *selectionModel = temp->selectionModel();
 
     const QModelIndexList indexes = selectionModel->selectedRows();
+    const auto findTable = findTab->getTable();
 
     for (QModelIndex index : indexes) {
         int row = proxy->mapToSource(index).row();
         table->removeRows(row, 1, QModelIndex());
-        findTab->testTable->removeRows(row, 1, QModelIndex());
+        findTable->removeRows(row, 1, QModelIndex());
     }
 }
 //! [5]
